@@ -1,0 +1,27 @@
+#!/bin/bash
+set -o noglob
+git remote update --prune
+raw_input=$(git branch -vv)
+while read -r line; do
+	branch_line=$(echo "$line" | sed s/*//g)
+	branch_line=$(echo $branch_line)
+	branch_name=${branch_line%% *}
+	if [[ $branch_line =~ "[origin/" ]]
+	then
+		has_origin=true
+	else
+		has_origin=false
+	fi
+	if [[ $branch_line =~ ": gone" ]]
+	then
+		has_gone=true
+	else
+		has_gone=false
+	fi
+	if [ $has_gone = true ] || [ $has_origin = false ]
+	then
+    echo "Removing branch $branch_name ..."
+		git branch -d $branch_name
+	fi
+done <<< "$raw_input"
+

@@ -1,0 +1,7 @@
+*
+!.gitignore
+!git-remove-untracked
+!git-remove-untracked-force
+!git-remove-untracked.ps1
+!git-remove-untracked-force.ps1
+
